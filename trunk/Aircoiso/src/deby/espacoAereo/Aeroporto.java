@@ -1,4 +1,4 @@
-package deby;
+package deby.espacoAereo;
 
 public class Aeroporto extends Thread {
 
