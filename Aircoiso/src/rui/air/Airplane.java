@@ -53,7 +53,8 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	public void run() {
 		try {
 			prox = (Point) pos.clone();
-			while (!cheguei) {
+			//esta linha vai ser alterada
+			while (!cheguei && currentFuel>0) {
 				controller.updateUI();
 				if (!waiting) {
 					if (trajecto.size() > 0) {
@@ -132,8 +133,12 @@ public class Airplane extends Thread implements Runnable, AirThing {
 				}
 				
 			}
+			synchronized (controller.getAirplanes()) {
+				controller.getAirplanes().remove(this);
+			} 
+			controller.updateUI();
+
 		} catch (InterruptedException e) {
-			System.out.println("Interrompido");
 		}
 
 	}
