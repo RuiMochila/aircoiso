@@ -23,10 +23,10 @@ import rui.control.GameController;
 @SuppressWarnings("serial")
 public class GameInterface extends JFrame{
 
-	protected GameController controller;
+	protected GameController controller; //pq Ž que Ž protected? pq est‡ nouto pacote? D
 	private String interfaceTitle = "AirController";
 	
-	public GameInterface(final GameController controller) {
+	public GameInterface(final GameController controller) { //final?
 		this.controller=controller;
 		setTitle(interfaceTitle);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
