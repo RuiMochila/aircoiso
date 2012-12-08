@@ -19,6 +19,7 @@ import rui.control.GameController;
 
 import rui.air.Airplane;
 
+
 public class AirplaneGraphic {
 
 	private LinkedList<Airplane> airplanes;
@@ -27,6 +28,16 @@ public class AirplaneGraphic {
 		this.airplanes = controller.getAirplanes();
 	}
 	
+	/**
+	 * Method to paint all the airplanes in the a Graphics object
+	 *
+	 * The method iterates over the list of airplanes e calls paint upon
+	 * <p>
+	 * each one in order to make a specialized paint.
+	 * 
+	 * @param  Graphics g : the graphics object to paint to.
+	 * @return sdnklnsd  
+	 */
 	public void paintAll(Graphics g){
 		synchronized (airplanes) {
 			
@@ -36,6 +47,11 @@ public class AirplaneGraphic {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param g
+	 * @param airplane
+	 */
 	public void paint(Graphics g, Airplane airplane) {
 
 		Graphics2D g2 = (Graphics2D) g;
@@ -43,13 +59,14 @@ public class AirplaneGraphic {
 		Point pos = airplane.getPos();
 		double baseDim = GameController.cellBaseDim;
 		
+		
 		try {
-			if (airplane.getCurrentFuel()< airplane.getInitFuel()* Airplane.RESERVA) {
-				image = ImageIO.read(new File("images/aviao_vermelho.png"));
-			} else {
-				image = ImageIO.read(new File("images/aviao.png"));
-			}
-
+//			if (airplane.getCurrentFuel()< airplane.getInitFuel()* Airplane.RESERVA) {
+//				image = ImageIO.read(new File("images/aviao_vermelho.png"));
+//			} else {
+//				image = ImageIO.read(new File("images/aviao.png"));
+//			}
+			image = ImageIO.read(new File("images/aviao.png"));
 			double locationX = image.getWidth() / 2;
 			double locationY = image.getHeight() / 2;
 			AffineTransform tx = AffineTransform.getRotateInstance(
@@ -91,27 +108,39 @@ public class AirplaneGraphic {
 				
 			}
 
+			drawFuelBars(g, airplane);
 		} catch (IOException ex) {
 		}
 
 	}
 	
-//	public void drawFuelBars(Graphics2D g2){
-//		for (int i = 0; i < field.length; i++) {
-//			for (int j = 0; j < field[0].length; j++) {
-//				if (field[i][j] == 1) {
-//					int x = (baseUnit * j)+8;
-//					int y = (baseUnit * i)+3;
-//					g2.setStroke(new BasicStroke(4));
-//					g2.setColor(Color.gray);
-//					Line2D line = new Line2D.Double(x, y, x+baseUnit-4, y);
-//					g2.draw(line);
-//					g2.setColor(Color.green);
-//					Line2D line2 = new Line2D.Double(x, y, x+baseUnit-8, y);
-//					g2.draw(line2);
-//				}
-//			}
-//		}
-//		g2.setColor(Color.black);
-//	}
+	/**
+	 * 
+	 * @param g
+	 * @param airplane
+	 */
+	public void drawFuelBars(Graphics g, Airplane airplane) {
+		Point pos = airplane.getPos();
+		double baseDim = GameController.cellBaseDim;
+		
+		int x = (int) ((baseDim* pos.x)+4);
+		int y = (int) ((baseDim * pos.y)-2);
+		int comprimentoBase = (int) (baseDim - 5); 
+		int comprimento = (int)(comprimentoBase * (double)((double)airplane.getCurrentFuel()/(double)airplane.getInitFuel()));
+		
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(2));
+		if(comprimento<(0.2*comprimentoBase)){
+			g2.setColor(Color.red);
+		}else if(comprimento<(0.6*comprimentoBase)){
+			g2.setColor(Color.yellow);
+		}else{
+			g2.setColor(Color.green);
+		}
+		
+		Line2D line2 = new Line2D.Double(x, y+baseDim, x + comprimento, y+baseDim);
+		g2.draw(line2);
+
+		g2.setColor(Color.black);
+	}
 }

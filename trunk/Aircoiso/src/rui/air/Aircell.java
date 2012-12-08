@@ -2,9 +2,22 @@ package rui.air;
 
 import java.awt.Point;
 
+/**
+ * A classe que representa as células no espaço aéreo.
+ * São o recurso partilhado pelos aviões.
+ * 
+ * @author Rui
+ *
+ */
 public class Aircell {
+	/**
+	 * A posição em que a célula se encontra
+	 */
 	private Point pos;
 	//Alterar para receber também os aeroportos
+	/**
+	 * Referência do objecto que ocupa actualmente a célula 
+	 */
 	private AirThing ocupante;
 	private boolean ocupada;
 	
