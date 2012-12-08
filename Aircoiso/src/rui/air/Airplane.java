@@ -71,13 +71,6 @@ public class Airplane extends Thread implements Runnable, AirThing {
 						//Aqui move para a próxima célula 
 						//Apenas se estiver livre
 						
-						//Livra a anterior. Onde a tenho?
-						if(destinoIntermedio){
-							System.out.println("Pos "+pos);
-							System.out.println("Proxima Celula: "+proximaCelula);
-							System.out.println("Prox "+prox);
-						}
-						
 						
 						synchronized (proximaCelula) {
 							if(proximaCelula.isOcupada()){
@@ -133,6 +126,9 @@ public class Airplane extends Thread implements Runnable, AirThing {
 				}
 				
 			}
+			Aircell anterior = this.espaco.getCell(pos);
+			anterior.removeOcupante();
+			anterior.desocupa();
 			synchronized (controller.getAirplanes()) {
 				controller.getAirplanes().remove(this);
 			} 
