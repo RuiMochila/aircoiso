@@ -169,4 +169,9 @@ public class GameController {
 		ui.repaint();
 	}
 
+	public Airspace getAirspace() {
+		
+		return this.espaco;
+	}
+
 }
