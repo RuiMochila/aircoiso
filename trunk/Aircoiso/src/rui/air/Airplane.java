@@ -10,7 +10,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 
 	
 	private final static int SLEEP_TIME = 1000;
-	public static final double RESERVA = 0.20;
+	public static final double RESERVA = 0.30;
 	private static final int CONSUMO = 10;
 
 	private final static AirType type = AirType.AIRPLANE;
@@ -192,25 +192,25 @@ public class Airplane extends Thread implements Runnable, AirThing {
 		if(!destinoIntermedio){
 			this.pointoDestino = pointoDestino;
 		}
-		Point proximaCelula = (Point) pos.clone();
+		Point proxCelula = (Point) pos.clone();
 		trajecto.clear();
-		while (espaco.getCell(proximaCelula) != espaco.getCell(pointoDestino)) {
-			int dx = pointoDestino.x - proximaCelula.x;
-			int dy = pointoDestino.y - proximaCelula.y;
+		while (espaco.getCell(proxCelula) != espaco.getCell(pointoDestino)) {
+			int dx = pointoDestino.x - proxCelula.x;
+			int dy = pointoDestino.y - proxCelula.y;
 			if (Math.abs(dx) > Math.abs(dy)) {
 				if (dx > 0) {
-					proximaCelula.x++;
+					proxCelula.x++;
 				} else {
-					proximaCelula.x--;
+					proxCelula.x--;
 				}
 			} else {
 				if (dy > 0) {
-					proximaCelula.y++;
+					proxCelula.y++;
 				} else {
-					proximaCelula.y--;
+					proxCelula.y--;
 				}
 			}
-			trajecto.addLast(espaco.getCell(proximaCelula));
+			trajecto.addLast(espaco.getCell(proxCelula));
 		}
 	}
 	
