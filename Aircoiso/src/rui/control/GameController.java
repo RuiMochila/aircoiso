@@ -20,7 +20,7 @@ import rui.ui.GameInterface;
 public class GameController {
 
 	public static final double cellBaseDim = 30.0;
-	private int colsNum;
+	private int colsNum; // pq Ž que isto est‡ aqui no controlador?
 	private int rowsNum;
 
 	private LinkedList<Airport> airports;
