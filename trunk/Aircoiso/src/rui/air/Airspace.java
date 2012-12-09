@@ -8,8 +8,8 @@ public class Airspace {
 
 	public Airspace(int numCelX, int numCelY) {
 		super();
-		this.numCelX = numCelX;
-		this.numCelY = numCelY;
+		//this.numCelX = numCelX;
+		//this.numCelY = numCelY;
 		celulas = new Aircell[numCelX][numCelY];
 		for (int x = 0; x < numCelX; x++) {
 			for (int y = 0; y < numCelY; y++) {

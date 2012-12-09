@@ -35,7 +35,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	private boolean waiting = false;
 
 	// Representacao Destino Final e Intermédio
-	boolean destinoIntermedio = false;
+	boolean destinoIntermedio = false; 
 	private Point destinoFinal;
 	private boolean cheguei = false;
 
@@ -139,6 +139,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	}
 	
 	private void rotateDirection(){
+		//tu nao trocaste isto? onde esta x nao e suposto estar y? D
 		if(prox.x>pos.x){
 			rotation = 90;
 		}else if(prox.x<pos.x){
@@ -185,6 +186,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 		this.waiting = true;
 	}
 	
+	//pq lhe chamas Time? D
 	public int getTimeToDestino(){
 		if(trajecto!=null){
 			return trajecto.size();
