@@ -4,8 +4,6 @@ import java.awt.Point;
 
 public class Airspace {
 
-	private int numCelX;
-	private int numCelY;
 	private Aircell[][] celulas;
 
 	public Airspace(int numCelX, int numCelY) {
