@@ -30,7 +30,7 @@ public class Aircell {
 		this.lock = new ReentrantLock();
 	}
 
-	public synchronized boolean tryOcupyCell(AirThing ocupante){
+	public synchronized boolean tryOccupyCell(AirThing ocupante){
 		if(lock.tryLock()){
 			this.ocupante=ocupante;
 			ocupada=true;
