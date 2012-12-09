@@ -7,9 +7,6 @@ public class Airspace {
 	private Aircell[][] celulas;
 
 	public Airspace(int numCelX, int numCelY) {
-		super();
-		//this.numCelX = numCelX;
-		//this.numCelY = numCelY;
 		celulas = new Aircell[numCelX][numCelY];
 		for (int x = 0; x < numCelX; x++) {
 			for (int y = 0; y < numCelY; y++) {
