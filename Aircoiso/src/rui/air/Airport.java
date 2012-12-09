@@ -10,7 +10,7 @@ import rui.control.GameController;
 public class Airport extends Thread implements Runnable, AirThing{
 
 	
-	private static final AirType type = AirType.AIRPORT;
+	private static final AirType type = AirType.AIRPORT; // pq e que isto faz sentido? pq e que nao extende um airtype?pq e enumerado?
 //	private static final int NUM_AVIOES = 3;
 	private GameController controller;
 	private Airspace espaco;
@@ -60,6 +60,7 @@ public class Airport extends Thread implements Runnable, AirThing{
 	//depois aqui no run se existirem volta a lançálo
 
 	
+	//Nao consigo perceber pq estes dois metodos onde sao precisos? se calhar vou perceber mais a frente
 	@Override
 	public AirType getAirType() {
 		return type;
