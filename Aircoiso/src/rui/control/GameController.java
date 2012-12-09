@@ -1,10 +1,10 @@
 package rui.control;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 
 import rui.air.AirThing;
@@ -20,8 +20,6 @@ import rui.ui.GameInterface;
 public class GameController {
 
 	public static final double cellBaseDim = 30.0;
-	private int colsNum; // pq Ž que isto est‡ aqui no controlador?
-	private int rowsNum;
 
 	private LinkedList<Airport> airports;
 	private LinkedList<Airplane> airplanes;
@@ -31,6 +29,9 @@ public class GameController {
 
 	private Airplane waitingPlane;
 
+	private int colsNum;
+	private int rowsNum;
+
 	// campos referentes ao jogo
 	// métodos de acesso ás infos
 	// set jogo local e servidor
@@ -39,20 +40,25 @@ public class GameController {
 
 	// construtores, por ficheiro, e por parâmetros
 
-	public GameController(int colsNum, int rowsNum) {
-		this.colsNum = colsNum;
-		this.rowsNum = rowsNum;
-		this.pointCounter = new PointCounter();
-		this.espaco = new Airspace(colsNum, rowsNum);
-		airplanes = new LinkedList<Airplane>();
-		airports = new LinkedList<Airport>();
-		// apenas para teste agora
+	public GameController() {
+
 	}
 
 	public void createGameByFile() {
+		
 		try {
 			// Falta meter inteligência de controlo de coordenadas
 			Scanner reader = new Scanner(new FileReader("aeroportos.txt"));
+			this.pointCounter = new PointCounter();
+			if(reader.hasNext()){
+				this.colsNum = reader.nextInt();
+				this.rowsNum = reader.nextInt();
+				this.espaco = new Airspace(colsNum, rowsNum);
+			}
+			
+			airplanes = new LinkedList<Airplane>();
+			airports = new LinkedList<Airport>();
+			
 			while (reader.hasNext()) {
 				int x = reader.nextInt();
 				int y = reader.nextInt();
@@ -68,11 +74,40 @@ public class GameController {
 		}
 	}
 
-	public void createGameRandom(int numAirports) {
-
-		// Random para as posições existentes.
-		// Situações extremas
-
+	public void createGameRandom(int colsNum, int rowsNum, int numAirports) {
+		//tratar erros de casos extremos
+		assert colsNum>0 && rowsNum>0 && numAirports>0;
+		assert (colsNum*rowsNum)>numAirports;
+		
+		this.colsNum=colsNum;
+		this.rowsNum=rowsNum;
+		this.pointCounter = new PointCounter();
+		this.espaco = new Airspace(colsNum, rowsNum);
+		airplanes = new LinkedList<Airplane>();
+		airports = new LinkedList<Airport>();
+		
+		for(int i=0; i<numAirports; i++){
+			Random rand = new Random();
+			int x;
+			int y;
+			//repetir pares X,Y até encontrar um que esteja livre
+			boolean posLivre;
+			do {
+				x = rand.nextInt(colsNum);
+				y = rand.nextInt(rowsNum);
+				posLivre = true;
+				for (Airport airport : airports) {
+					if (airport.getPos().x == x && airport.getPos().y == y) {
+						posLivre = false;
+					}
+				}
+			} while (!posLivre);
+			
+			Airport airport = new Airport(this, new Point(x, y), espaco);
+			synchronized (airports) {
+				airports.add(airport);
+			}
+		}
 	}
 
 	public void initUI() {
