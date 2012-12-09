@@ -127,7 +127,6 @@ public class Airplane extends Thread implements Runnable, AirThing {
 							this.cheguei=true;
 							controller.getPointCounter().addPoints(10);
 							controller.getPointCounter().addPoints((int)(this.currentFuel/CONSUMO));
-							System.out.println((int)(this.currentFuel/CONSUMO));
 						}
 					}
 				}else{
