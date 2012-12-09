@@ -58,12 +58,25 @@ public class Airplane extends Thread implements Runnable, AirThing {
 				controller.updateUI();
 				if (!waiting) {
 					if (trajecto.size() > 0) {
-						//Se por=prox estou na próxima célula, tenho de ir buscar mais
-						if (pos.equals(prox)) {
+						//Se pos=prox consegui chegar à próxima célula, 
+						//tenho de ir buscar mais
+						//Se a proximaCélula estiver ocupada, eu tenho pos!=prox
+						//Mas preciso de ir buscar uma célula nova na mesma 
+						//Se já tiver um destinoIntermédio atribuido
+						//Para contornar o deadlock
+						//Se não juntar esta última guarda ele vai buscar a célula
+						//Que estaria a seguir ao avião que está a bloquear o caminho e 
+						//passa por cima dele.
+						
+						//Tenho de fazer um refactoring neste avião, e vai passar por um acesso mais inteligente às prócximas células, controlo de fluxo mais inteligente
+						//A classe está martelada, bem como algumas deste projecto.
+						if (pos.equals(prox)
+								|| (!pos.equals(prox) && destinoIntermedio && proximaCelula
+										.isOcupada())) {
 							proximaCelula = trajecto.pollFirst();
 							if (proximaCelula != null) {
 								prox = proximaCelula.getPos();
-								//Mete o avião no sentido certo.
+								// Mete o avião no sentido certo.
 								rotate();
 							}
 						}
@@ -94,7 +107,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 						//Meti estes aqui para não executar quando estava no
 						//destino intermédio, mas preciso de perder tb combustivel
 						//quando ele está à espera.
-						controller.getPointCounter().addPoints(10);
+						
 						currentFuel -= CONSUMO;
 						sleep(SLEEP_TIME);
 					} else {
@@ -112,6 +125,9 @@ public class Airplane extends Thread implements Runnable, AirThing {
 								controller.getAirplanes().remove(this);
 							} 
 							this.cheguei=true;
+							controller.getPointCounter().addPoints(10);
+							controller.getPointCounter().addPoints((int)(this.currentFuel/CONSUMO));
+							System.out.println((int)(this.currentFuel/CONSUMO));
 						}
 					}
 				}else{
@@ -125,6 +141,9 @@ public class Airplane extends Thread implements Runnable, AirThing {
 					sleep(SLEEP_TIME);
 				}
 				
+			}
+			if(!(currentFuel>0)){
+				controller.getPointCounter().addPoints(-100);
 			}
 			Aircell anterior = this.espaco.getCell(pos);
 			anterior.removeOcupante();
@@ -207,7 +226,14 @@ public class Airplane extends Thread implements Runnable, AirThing {
 				}
 			}
 			trajecto.addLast(espaco.getCell(proxCelula));
+			if(destinoIntermedio){
+				System.out.println(proxCelula);
+			}
 		}
+		if(destinoIntermedio){
+			System.out.println(trajecto);
+		}
+		
 	}
 	
 	public void waitCommand() {
@@ -254,7 +280,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	public void setIntermedio(Point intermedio){
 		this.intermedio = intermedio;
 		destinoIntermedio = true;
-		
+		controller.getPointCounter().addPoints(-1);
 		setDestino(intermedio);
 		
 	}
