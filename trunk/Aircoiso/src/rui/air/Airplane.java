@@ -263,7 +263,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	}
 	
 	public void abastece(int neededFuel){
-		this.initFuel = ((int)(neededFuel* (1+RESERVA)))*CONSUMO;
+		this.initFuel = (int)((double)(neededFuel*(double)(1+RESERVA))*CONSUMO);
 		this.currentFuel=this.initFuel;
 	}
 	

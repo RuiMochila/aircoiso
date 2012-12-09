@@ -9,13 +9,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GameController controller = new GameController(15,20);
-//		controller.createGameRandom(numAirports);
+		GameController controller = new GameController();
+		
+//		controller.createGameByFile();
+		
+		controller.createGameRandom(15, 15, 4);
 		
 		controller.initUI();
 		
-		controller.createGameByFile();
-
 		controller.initAirports();
 		
 		controller.updateUI();
