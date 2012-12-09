@@ -42,7 +42,10 @@ public class AirplaneGraphic {
 		synchronized (airplanes) {
 
 			for (Airplane airplane : airplanes) {
-				paint(g, airplane);
+				if(airplane.isVisible()){
+					paint(g, airplane);
+				}
+				
 			}
 		}
 	}
