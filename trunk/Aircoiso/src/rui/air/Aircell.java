@@ -1,6 +1,7 @@
 package rui.air;
 
 import java.awt.Point;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A classe que representa as células no espaço aéreo.
@@ -20,13 +21,33 @@ public class Aircell {
 	 */
 	private AirThing ocupante;
 	private boolean ocupada;
+	private ReentrantLock lock;
 	
 	public Aircell(Point pos) {
 		super();
 		this.pos = pos;
 		this.ocupada=false;
+		this.lock = new ReentrantLock();
 	}
 
+	public synchronized boolean tryOcupyCell(AirThing ocupante){
+		if(lock.tryLock()){
+			this.ocupante=ocupante;
+			ocupada=true;
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public synchronized void leaveCell(){
+		if(lock.isHeldByCurrentThread()){
+			lock.unlock();
+			ocupada = false;
+			ocupante=null;
+		}
+	}
+	
 	public Point getPos() {
 		return pos;
 	}
@@ -36,32 +57,12 @@ public class Aircell {
 		return new String("X= " + pos.x + " Y= " + pos.y);
 	}
 
-	public void setOcupante(Airplane airplane) {
-		this.ocupante = airplane;
-	}
-	
 	public AirThing getOcupante(){
 		return this.ocupante;
 	}
-
-	//Mudar
-	public void removeOcupante() {
-		this.ocupante=null;
-		//notifica?
-		//altera bool para acesso
-	}
 	
-	public boolean isOcupada(){
+	public boolean isOccupied(){
 		return ocupada;
-	}
-
-	public void ocupa() {
-		this.ocupada=true;
-		
-	}
-
-	public void desocupa() {
-		this.ocupada=false;
 	}
 
 }

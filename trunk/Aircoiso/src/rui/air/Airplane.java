@@ -16,8 +16,11 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	private final static AirType type = AirType.AIRPLANE;
 	private GameController controller;
 
+	//currente
 	private Point pos;
+	//prox no trajecto
 	private Point prox;
+	//ponto intermedio
 	private Point intermedio;
 	private LinkedList<Aircell> trajecto = new LinkedList<Aircell>();
 	private Aircell proximaCelula;
@@ -26,21 +29,16 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	private int initFuel;
 	private int currentFuel;
 	
-	
 	// Este campo é preenchido pelo run com o sentido, para ser usado no paint
 	private int rotation = 0;
-	// Quando está à espera da célula livre
+	// Quando está à espera de uma ordem
 	private boolean waiting = false;
 
 	// Representacao Destino Final e Intermédio
 	boolean destinoIntermedio = false;
-	private Point pointoDestino;
+	private Point destinoFinal;
 	private boolean cheguei = false;
 
-	// Pensar na dinâmica de conhecer os aeroportos e destinos.
-	// Pertence ao aeroporto, ao avião, ao controller?
-	// Tb tem de ter aqui acesso ao espacoAereo.
-	// Para os pontos tb precisa de acesso ao counter
 	public Airplane(GameController controller, Point pos,
 			Airspace espaco) {
 		this.controller = controller;
@@ -72,35 +70,22 @@ public class Airplane extends Thread implements Runnable, AirThing {
 						//A classe está martelada, bem como algumas deste projecto.
 						if (pos.equals(prox)
 								|| (!pos.equals(prox) && destinoIntermedio && proximaCelula
-										.isOcupada())) {
+										.isOccupied())) {
 							proximaCelula = trajecto.pollFirst();
 							if (proximaCelula != null) {
 								prox = proximaCelula.getPos();
 								// Mete o avião no sentido certo.
-								rotate();
+								rotateDirection();
 							}
 						}
 						
 						//Aqui move para a próxima célula 
-						//Apenas se estiver livre
-						
-						
-						synchronized (proximaCelula) {
-							if(proximaCelula.isOcupada()){
-								moveInCirc();
-								//Há algo na falta do move que frita isto
-//								move();
-								//no pos ou prox
-								//proxima celula
-							}else{
-								proximaCelula.ocupa();
-								Aircell anterior = this.espaco.getCell(pos);
-								
-								move();
-								//há stress por não estar a concorrer à minha anterior?
-								//para me tirar de lá n há stress...
-								anterior.desocupa();
-							}
+						if(proximaCelula.tryOcupyCell(this)){
+							Aircell anterior = this.espaco.getCell(pos);
+							this.pos=proximaCelula.getPos();
+							anterior.leaveCell();
+						}else{
+							moveInCirc();
 						}
 						
 						
@@ -113,10 +98,9 @@ public class Airplane extends Thread implements Runnable, AirThing {
 					} else {
 						//Chegou ao destino
 						if(destinoIntermedio){
-							//Era intermédio
+							//Era intermédio, volto a fazer setDestino com o final
 							destinoIntermedio=false;
-							setDestino(pointoDestino);
-							//o prox agora continua igual a antes de meter novo destino.
+							setDestino(destinoFinal);
 						}else{
 							//Não era intermedio mas final
 							//O que acontece quando eu chego ao meu destino?
@@ -133,9 +117,6 @@ public class Airplane extends Thread implements Runnable, AirThing {
 					
 					//waiting for command, consome tb combustível
 
-					//Move em circulos apenas quando está à espera da célula 
-					//não é aqui
-					//moveInCirc();
 					currentFuel -= CONSUMO;
 					sleep(SLEEP_TIME);
 				}
@@ -145,8 +126,8 @@ public class Airplane extends Thread implements Runnable, AirThing {
 				controller.getPointCounter().addPoints(-100);
 			}
 			Aircell anterior = this.espaco.getCell(pos);
-			anterior.removeOcupante();
-			anterior.desocupa();
+			anterior.leaveCell();
+			
 			synchronized (controller.getAirplanes()) {
 				controller.getAirplanes().remove(this);
 			} 
@@ -157,7 +138,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 
 	}
 	
-	private void rotate(){
+	private void rotateDirection(){
 		if(prox.x>pos.x){
 			rotation = 90;
 		}else if(prox.x<pos.x){
@@ -171,40 +152,12 @@ public class Airplane extends Thread implements Runnable, AirThing {
 
 	private void moveInCirc() {
 		rotation += 90;
-		// Falta cenas acho eu
-	}
-
-
-	/*
-	 * Tenho de reformular aspectos para o acesso às células. Concorrente. Aqui?
-	 * Vou fazer agora assim: Quando ele move acede ao espaço e à célula. Tem de
-	 * tentar acesso sem fazer wait para gastar fuel. Outra coisa, se me movo
-	 * para outro lado, tenho de me retirar da anterior.
-	 */
-	private void move() {
-		int dx = prox.x - pos.x;
-		int dy = prox.y - pos.y;
-		espaco.getCell(pos).removeOcupante();
-		if (Math.abs(dx) > Math.abs(dy)) {
-			if (dx > 0) {
-				pos.x++;
-			} else {
-				pos.x--;
-			}
-		} else {
-			if (dy > 0) {
-				pos.y++;
-			} else {
-				pos.y--;
-			}
-		}
-		espaco.getCell(pos).setOcupante(this);
 	}
 
 	public void setDestino(Point pointoDestino) {
-		//Se for usado no âmbito de um destino intermédio não mexe
+		//Se não estou para destino intermédio, é o destino final, guarda-o.
 		if(!destinoIntermedio){
-			this.pointoDestino = pointoDestino;
+			this.destinoFinal = pointoDestino;
 		}
 		Point proxCelula = (Point) pos.clone();
 		trajecto.clear();
@@ -225,14 +178,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 				}
 			}
 			trajecto.addLast(espaco.getCell(proxCelula));
-			if(destinoIntermedio){
-				System.out.println(proxCelula);
-			}
 		}
-		if(destinoIntermedio){
-			System.out.println(trajecto);
-		}
-		
 	}
 	
 	public void waitCommand() {
