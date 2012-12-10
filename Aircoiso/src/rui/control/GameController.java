@@ -20,6 +20,10 @@ import rui.ui.GameInterface;
 public class GameController {
 
 	public static final double cellBaseDim = 30.0; //pois nao consigo entender pq nao esta mesmo na classe Celula D
+	//o cellBasedim está aí porque é uma "constante" 
+	//de projecto e pensei logo que ia ser partilhada, 
+	//e como o controlador é uma classe com uma óptima 
+	//exposição ao projecto useia para guardar essa constante
 
 	private LinkedList<Airport> airports;
 	private LinkedList<Airplane> airplanes;
@@ -166,11 +170,19 @@ public class GameController {
 				}
 			}
 		} else { //nao percebi mto bem este D
+			//se chegar aqui então a thing que saiu da célula clicada é != null
+			//então pergunta se existe um avião à espera de ordens =)
 			if (waitingPlane != null) {
+				//se sim dá-lhe um destino intermédio
 				waitingPlane.setIntermedio(p);
+				//já n está à espera de comando
 				waitingPlane.stopWaiting();
+				//digo aqui que mais nenhum avião está à espera de ordens
 				waitingPlane = null;
 			}
+			//eu faço isto para chamar apenas um método do controlador
+			//e aqui vejo o que se faz. se clicar num avião guado-o para
+			//a seguir receber ordens aqui.
 		}
 
 	}
