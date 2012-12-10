@@ -101,9 +101,12 @@ public class GameController {
 				y = rand.nextInt(rowsNum);
 				posLivre = true;
 				for (Airport airport : airports) {
+					//Se já existe um aeroporto nestas coordenadas dá false 
 					if (airport.getPos().x == x && airport.getPos().y == y) {
 						posLivre = false;
 					}
+					//Se ja existir um aeroporto nas células á volta tb dá false
+					//acabo depois se der tempo, é mais crítico o aeroporto.
 				}
 			} while (!posLivre);
 			
