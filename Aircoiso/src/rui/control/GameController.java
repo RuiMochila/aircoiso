@@ -19,7 +19,7 @@ import rui.ui.GameInterface;
 //Mais tarde pensa-se na outra arquitectura.
 public class GameController {
 
-	public static final double cellBaseDim = 30.0;
+	public static final double cellBaseDim = 30.0; //pois nao consigo entender pq nao esta mesmo na classe Celula D
 
 	private LinkedList<Airport> airports;
 	private LinkedList<Airplane> airplanes;
@@ -165,7 +165,7 @@ public class GameController {
 					waitingPlane = airplane;
 				}
 			}
-		} else {
+		} else { //nao percebi mto bem este D
 			if (waitingPlane != null) {
 				waitingPlane.setIntermedio(p);
 				waitingPlane.stopWaiting();
