@@ -2,6 +2,8 @@ package rui.air;
 
 import java.awt.Point;
 import java.util.LinkedList;
+import java.util.Random;
+
 import rui.control.GameController;
 
 public class Airplane extends Thread implements Runnable, AirThing {
@@ -47,8 +49,9 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	@Override
 	public void run() {
 		//Quando começa torna-se visível
+		esperaTempoAleatorio();
 		this.visible=true;
-
+		
 		try {
 			prox = (Point) pos.clone();
 			while (!cheguei && currentFuel > 0) {
@@ -87,9 +90,21 @@ public class Airplane extends Thread implements Runnable, AirThing {
 
 	}
 
+	private void esperaTempoAleatorio(){
+		Random rand = new Random();
+		int time = rand.nextInt(3000);
+		try {
+			sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void endProcedure() {
 		//Se foi por falta de combustivel perde pontos
-		if (!(currentFuel > 0)) {
+		//Somo 10 pk depois de chegar ao destino final ainda passa pelo consumo
+		if (!((currentFuel+CONSUMO) > 0)) {
+			System.out.println("Despenhou-se com "+currentFuel);
 			controller.getPointCounter().addPoints(-100);
 		}
 		//Liberto a célula de onde desapareci
