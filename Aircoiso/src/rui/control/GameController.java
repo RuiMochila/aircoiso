@@ -24,6 +24,8 @@ public class GameController {
 	//de projecto e pensei logo que ia ser partilhada, 
 	//e como o controlador é uma classe com uma óptima 
 	//exposição ao projecto useia para guardar essa constante
+	
+	//acho que continua a nao fazer sentido. e uma constante, tudo bem, mas podia estar noutra classe qq :s sei la.. nas definicoes tipo num linhas/num colunas prai D
 
 	private LinkedList<Airport> airports;
 	private LinkedList<Airplane> airplanes;
@@ -48,6 +50,8 @@ public class GameController {
 
 	}
 
+	//pois tmb nao entendo este metodo aqui. supostamente o controlador nao devia apenas fazer o update e esse tipo de coisas a iterface grafica? 
+	// O criar jogo tmb acho que devia estar num pacote jogo com as definicoes todas do jogo ou assim ou ceu como o prof lhe chama D
 	public void createGameByFile() {
 		
 		try {
@@ -118,7 +122,7 @@ public class GameController {
 	}
 
 	public void initUI() {
-		ui = new GameInterface(this);
+		ui = new GameInterface(this); // pq e que recebe este objecto? D
 	}
 
 	public int getColsNum() {
@@ -147,6 +151,7 @@ public class GameController {
 		return this.airplanes;
 	}
 
+	//sinceramente tambem nao entendo o pq deste metodo aqui D 
 	public void click(Point p) {
 		
 		// If is null vê se há avião à espera e faz setIntermédio
