@@ -50,8 +50,7 @@ public class GameController {
 
 	}
 
-	//pois tmb nao entendo este metodo aqui. supostamente o controlador nao devia apenas fazer o update e esse tipo de coisas a iterface grafica? 
-	// O criar jogo tmb acho que devia estar num pacote jogo com as definicoes todas do jogo ou assim ou ceu como o prof lhe chama D
+
 	public void createGameByFile() {
 		
 		try {
