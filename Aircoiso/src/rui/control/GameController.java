@@ -46,6 +46,8 @@ public class GameController {
 
 	// construtores, por ficheiro, e por parâmetros
 
+	
+	// e preciso haver construtor ou nao? Senao tiver nao faz mal certo? D
 	public GameController() {
 
 	}
@@ -150,19 +152,21 @@ public class GameController {
 		return this.airplanes;
 	}
 
-	//sinceramente tambem nao entendo o pq deste metodo aqui D 
+	
 	public void click(Point p) {
 		
 		// If is null vê se há avião à espera e faz setIntermédio
 		// Se não null pergunta se é avião.
 
-		AirThing thing = espaco.getCell(p).getOcupante();
+		AirThing thing = espaco.getCell(p).getOcupante(); 
+		// se calhar isto fica um bocado confuso, o ocupante podia estar mesmo no espaco nao? D
+		// eu acho que ficava melhor porque a celula e como um auxilio para o espaco D
 
 		if (thing != null) {
 
 			// É avião?
 			if (thing.getAirType() == AirType.AIRPLANE) {
-				Airplane airplane = (Airplane) thing;
+				Airplane airplane = (Airplane) thing; // esta instrucao nao esta ao cntrario? thing = Airoplane aeroplane? D 
 				if (airplane.isWaitingCommand()) {
 					airplane.stopWaiting();
 					waitingPlane = null;
