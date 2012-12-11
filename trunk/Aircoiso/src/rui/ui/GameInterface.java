@@ -64,18 +64,20 @@ public class GameInterface extends JFrame{
 	}
 	
 	
-	private class Gamefield extends JComponent{
+	private class Gamefield extends JComponent{ // esta classe e responsavel por fazer o que exactamente? D
 		AirplaneGraphic airplaneGraphics; 
 		AirportGraphic airportGraphic;
 		
 		public Gamefield(){
-			final double baseDim = GameController.cellBaseDim;
+			final double baseDim = GameController.cellBaseDim; // supostamente o cellBaseDim nao foi criado no controlador para ser visto por todo o lado? entao pq inicias aqui outra x? D
 			int cols = controller.getColsNum();
 			int rows = controller.getRowsNum();
 			airplaneGraphics = new AirplaneGraphic(controller);
 			airportGraphic = new AirportGraphic(controller);
 			
-			setPreferredSize(new Dimension((int)(cols*baseDim), (int)(rows*baseDim)));
+			
+			setPreferredSize(new Dimension((int)(cols*baseDim), (int)(rows*baseDim))); 
+			// pq e que multiplicas por baseDim? acho que ja percebi D 
 			
 			addMouseListener(new MouseListener() {
 				public void mouseReleased(MouseEvent e) {				
@@ -89,7 +91,7 @@ public class GameInterface extends JFrame{
 					
 					
 					//Converte a coordenada em célula da matriz
-					int x = (int) Math.floor(e.getX()/baseDim);
+					int x = (int) Math.floor(e.getX()/baseDim); // nao percebi mt bem o metodo floor nem pq divides por baseDim D
 					int y = (int) Math.floor(e.getY()/baseDim);
 					
 					//Evoca o método click de conveniência
@@ -113,9 +115,9 @@ public class GameInterface extends JFrame{
 		
 		
 		@Override
-		protected void paintComponent(Graphics g) {
+		protected void paintComponent(Graphics g) { // pq e que umas sao protected outras private outras public? :s D
 			super.paintComponent(g);
-			Graphics2D g2 = (Graphics2D) g;
+			Graphics2D g2 = (Graphics2D) g; // este aqi nao podia ser ja Grafics2D? D
 			
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, getWidth(), getHeight());
@@ -124,6 +126,8 @@ public class GameInterface extends JFrame{
 			
 			airportGraphic.paintAll(g);
 			airplaneGraphics.paintAll(g);
+			
+			
 			
 //			controller.paintOtherComponents(g);
 		}
@@ -155,8 +159,12 @@ public class GameInterface extends JFrame{
 				g2.draw(line);
 			}
 		}
+	
 		
+
 	}
+	
+	
 
 	
 }
