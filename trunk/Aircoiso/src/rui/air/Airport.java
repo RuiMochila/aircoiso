@@ -10,11 +10,11 @@ import rui.control.GameController;
 public class Airport extends Thread implements Runnable, AirThing{
 
 	
-	private static final AirType type = AirType.AIRPORT; // pq e que isto faz sentido? pq e que nao extende um airtype?pq e enumerado?
+	private static final AirType type = AirType.AIRPORT; 
 //	private static final int NUM_AVIOES = 3;
 	private GameController controller;
 	private Airspace espaco;
-	private Point pos;
+	private Point pos; 
 	
 	public Airport(GameController controller, Point pos, Airspace espaco){
 		this.pos=pos;
