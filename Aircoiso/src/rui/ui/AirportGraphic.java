@@ -18,15 +18,6 @@ public class AirportGraphic {
 		this.airports = controller.getAirports();
 	}
 	
-//	public synchronized void addAirport(Airport airport){
-//		this.airports.add(airport);
-//	}
-//	
-//	//Assim ou bloco sincronizado em airplane?
-//	public synchronized void removeAirport(Airport airport){
-//		this.airports.remove(airport);
-//	}
-	
 	public void paintAll(Graphics g){
 		synchronized (airports) {
 			for (Airport airport : airports) {

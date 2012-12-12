@@ -26,7 +26,9 @@ public class GameController {
 	//exposição ao projecto useia para guardar essa constante
 	
 	//acho que continua a nao fazer sentido. e uma constante, tudo bem, mas podia estar noutra classe qq :s sei la.. nas definicoes tipo num linhas/num colunas prai D
-
+	//epah e um bocado irrelevante nao te preocupes com isso. 
+	//meti aqui logo de inicio porque sabia que a partida seria 
+	//visivel por todas as classes
 	private LinkedList<Airport> airports;
 	private LinkedList<Airplane> airplanes;
 	private PointCounter pointCounter;
@@ -48,6 +50,7 @@ public class GameController {
 
 	
 	// e preciso haver construtor ou nao? Senao tiver nao faz mal certo? D
+	//nao, isto nao faz aqui nada
 	public GameController() {
 
 	}
@@ -124,6 +127,8 @@ public class GameController {
 
 	public void initUI() {
 		ui = new GameInterface(this); // pq e que recebe este objecto? D
+		//como te epliquei ontem, a GameInterface precisa de falar com o controller
+		//entao quando o controller a cria dase a ela, para se ficarem a conhecer ;)
 	}
 
 	public int getColsNum() {
@@ -162,11 +167,15 @@ public class GameController {
 		// se calhar isto fica um bocado confuso, o ocupante podia estar mesmo no espaco nao? D
 		// eu acho que ficava melhor porque a celula e como um auxilio para o espaco D
 
+		//nao percebi... isto vai as espaco buscar a celula naquele ponto, e depois
+		//a celula pede o ocupante, se e que existe la algum agora
+
 		if (thing != null) {
 
 			// É avião?
 			if (thing.getAirType() == AirType.AIRPLANE) {
-				Airplane airplane = (Airplane) thing; // esta instrucao nao esta ao cntrario? thing = Airoplane aeroplane? D 
+				Airplane airplane = (Airplane) thing; // esta instrucao nao esta ao cntrario? thing = Airoplane aeroplane? D
+				//nao. se a thing e do tipo Airplane ent faco caste para airplane e uso airplane a partir daqui
 				if (airplane.isWaitingCommand()) {
 					airplane.stopWaiting();
 					waitingPlane = null;

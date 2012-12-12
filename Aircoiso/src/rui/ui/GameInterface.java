@@ -24,6 +24,7 @@ import rui.control.GameController;
 public class GameInterface extends JFrame{
 
 	protected GameController controller; //pq Ž que Ž protected? pq est‡ nouto pacote? D
+	//e protected para ser acessivel dentro da inner class sem recorrer a um getter
 	private String interfaceTitle = "AirController";
 	
 	public GameInterface(final GameController controller) { //final?
@@ -65,11 +66,18 @@ public class GameInterface extends JFrame{
 	
 	
 	private class Gamefield extends JComponent{ // esta classe e responsavel por fazer o que exactamente? D
+		//esta classe representa o quadrado onde o jogo decorre. o que tem a grelha e 
+		//a sentinela para tratar os clicks.
+		//fica assim mais modular. Se tivesse dependente do resto da interface podias ás
+		//tantas não conseguir ter a certeza de nada. Por exemplo, a coordenada 0,0 na interface
+		//completa é diferente da 0,0 deste componente. Bastava adicionar na interface um cena 
+		//por cima deste quadrado estragavate tudo. assim fica um objecto sólido
 		AirplaneGraphic airplaneGraphics; 
 		AirportGraphic airportGraphic;
 		
 		public Gamefield(){
 			final double baseDim = GameController.cellBaseDim; // supostamente o cellBaseDim nao foi criado no controlador para ser visto por todo o lado? entao pq inicias aqui outra x? D
+			//por nada em especial xD só para ficar mais pequeno no codigo aqui lol
 			int cols = controller.getColsNum();
 			int rows = controller.getRowsNum();
 			airplaneGraphics = new AirplaneGraphic(controller);
@@ -78,7 +86,7 @@ public class GameInterface extends JFrame{
 			
 			setPreferredSize(new Dimension((int)(cols*baseDim), (int)(rows*baseDim))); 
 			// pq e que multiplicas por baseDim? acho que ja percebi D 
-			
+			//por causa do que te expliquei. 3 colunas * 30 por cada uma fica 90 largura
 			addMouseListener(new MouseListener() {
 				public void mouseReleased(MouseEvent e) {				
 				}
@@ -93,6 +101,10 @@ public class GameInterface extends JFrame{
 					//Converte a coordenada em célula da matriz
 					int x = (int) Math.floor(e.getX()/baseDim); // nao percebi mt bem o metodo floor nem pq divides por baseDim D
 					int y = (int) Math.floor(e.getY()/baseDim);
+					//pela mesma razao que expliquei anterior.
+					//coordenada X=67, baseDim=30 -> 67/30 = 2,23
+					//o floor é para arredondar para baixo, o ceil para arredondar para cima
+					//entao dame coluna 2.
 					
 					//Evoca o método click de conveniência
 					controller.click(new Point(x,y));
@@ -116,9 +128,12 @@ public class GameInterface extends JFrame{
 		
 		@Override
 		protected void paintComponent(Graphics g) { // pq e que umas sao protected outras private outras public? :s D
+			//epah sinceramente acho que muito aqui pode ser private e ainda posso mudar
+			//esta veio protected porque estou a fazer override do paintComponent 
+			//que ja existe na classe JComponent, e la fizeram assim aqui tb tenho de fazer assim
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g; // este aqi nao podia ser ja Grafics2D? D
-			
+			//sim, simplesmente como o Graphics e mais comum que o 2D faco o cast ca dentro
 			g.setColor(Color.gray);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			
