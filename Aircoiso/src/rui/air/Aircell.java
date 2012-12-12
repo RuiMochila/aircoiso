@@ -15,13 +15,14 @@ public class Aircell {
 	 * A posição em que a célula se encontra
 	 */
 	private Point pos;
-	//Alterar para receber também os aeroportos
+
 	/**
 	 * Referência do objecto que ocupa actualmente a célula 
 	 */
-	private AirThing ocupante;
+	private Airplane ocupante;
 	private boolean ocupada;
 	private ReentrantLock lock;
+	private Airport aeroporto;
 	
 	public Aircell(Point pos) {
 		super();
@@ -30,7 +31,7 @@ public class Aircell {
 		this.lock = new ReentrantLock();
 	}
 
-	public synchronized boolean tryOccupyCell(AirThing ocupante){
+	public synchronized boolean tryOccupyCell(Airplane ocupante){
 		if(lock.tryLock()){
 			this.ocupante=ocupante;
 			ocupada=true;
@@ -57,12 +58,20 @@ public class Aircell {
 		return new String("X= " + pos.x + " Y= " + pos.y);
 	}
 
-	public AirThing getOcupante(){
+	public Airplane getOcupante(){
 		return this.ocupante;
 	}
 	
 	public boolean isOccupied(){
 		return ocupada;
+	}
+
+	public Airport getAeroporto() {
+		return aeroporto;
+	}
+
+	public void setAeroporto(Airport aeroporto) {
+		this.aeroporto = aeroporto;
 	}
 
 }

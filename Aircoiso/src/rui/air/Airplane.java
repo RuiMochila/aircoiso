@@ -6,13 +6,13 @@ import java.util.Random;
 
 import rui.control.GameController;
 
-public class Airplane extends Thread implements Runnable, AirThing {
+public class Airplane extends Thread implements Runnable {
 
 	private final static int SLEEP_TIME = 1000;
 	public static final double RESERVA = 0.30;
 	private static final int CONSUMO = 10;
 
-	private final static AirType type = AirType.AIRPLANE;
+//	private final static AirType type = AirType.AIRPLANE;
 	private GameController controller;
 
 	// currente
@@ -49,10 +49,12 @@ public class Airplane extends Thread implements Runnable, AirThing {
 	@Override
 	public void run() {
 		//Quando começa torna-se visível
+		try {
 		esperaTempoAleatorio();
+		tentaDescolar();
 		this.visible=true;
 		
-		try {
+		
 			prox = (Point) pos.clone();
 			while (!cheguei && currentFuel > 0) {
 				controller.updateUI();
@@ -73,6 +75,7 @@ public class Airplane extends Thread implements Runnable, AirThing {
 							setDestino(destinoFinal);
 						} else {
 							//Não era um intermedio qlqr, mas o final
+							System.out.println("vou aterrar");
 							arriveProcedure();
 						}
 					}
@@ -88,6 +91,17 @@ public class Airplane extends Thread implements Runnable, AirThing {
 		} catch (InterruptedException e) {
 		}
 
+	}
+
+	private void tentaDescolar() throws InterruptedException {
+		if (proximaCelula != null) {
+
+			while (proximaCelula.isOccupied()) {
+
+				sleep(SLEEP_TIME);
+
+			}
+		}
 	}
 
 	private void esperaTempoAleatorio(){
@@ -124,6 +138,11 @@ public class Airplane extends Thread implements Runnable, AirThing {
 		}
 		this.cheguei = true;
 		//Adiciono a pontuação
+		Airport aeroporto = espaco.getCell(pos).getAeroporto();
+		if(aeroporto!=null){
+			aeroporto.aterraAviao();
+			System.out.println("Aterrei no aeroporto");
+		}
 		controller.getPointCounter().addPoints(10);
 		controller.getPointCounter().addPoints(
 				(int) (this.currentFuel / CONSUMO));
@@ -256,11 +275,6 @@ public class Airplane extends Thread implements Runnable, AirThing {
 		controller.getPointCounter().addPoints(-1);
 		setDestino(intermedio);
 
-	}
-
-	@Override
-	public AirType getAirType() {
-		return type;
 	}
 
 	public Point getPos() {

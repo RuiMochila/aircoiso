@@ -19,16 +19,20 @@ import rui.ui.GameInterface;
 //Mais tarde pensa-se na outra arquitectura.
 public class GameController {
 
-	public static final double cellBaseDim = 30.0; //pois nao consigo entender pq nao esta mesmo na classe Celula D
-	//o cellBasedim está aí porque é uma "constante" 
-	//de projecto e pensei logo que ia ser partilhada, 
-	//e como o controlador é uma classe com uma óptima 
-	//exposição ao projecto useia para guardar essa constante
-	
-	//acho que continua a nao fazer sentido. e uma constante, tudo bem, mas podia estar noutra classe qq :s sei la.. nas definicoes tipo num linhas/num colunas prai D
-	//epah e um bocado irrelevante nao te preocupes com isso. 
-	//meti aqui logo de inicio porque sabia que a partida seria 
-	//visivel por todas as classes
+	public static final double cellBaseDim = 30.0; // pois nao consigo entender
+													// pq nao esta mesmo na
+													// classe Celula D
+	// o cellBasedim está aí porque é uma "constante"
+	// de projecto e pensei logo que ia ser partilhada,
+	// e como o controlador é uma classe com uma óptima
+	// exposição ao projecto useia para guardar essa constante
+
+	// acho que continua a nao fazer sentido. e uma constante, tudo bem, mas
+	// podia estar noutra classe qq :s sei la.. nas definicoes tipo num
+	// linhas/num colunas prai D
+	// epah e um bocado irrelevante nao te preocupes com isso.
+	// meti aqui logo de inicio porque sabia que a partida seria
+	// visivel por todas as classes
 	private LinkedList<Airport> airports;
 	private LinkedList<Airplane> airplanes;
 	private PointCounter pointCounter;
@@ -48,37 +52,37 @@ public class GameController {
 
 	// construtores, por ficheiro, e por parâmetros
 
-	
 	// e preciso haver construtor ou nao? Senao tiver nao faz mal certo? D
-	//nao, isto nao faz aqui nada
+	// nao, isto nao faz aqui nada
 	public GameController() {
 
 	}
 
-
 	public void createGameByFile() {
-		
+
 		try {
 			// Falta meter inteligência de controlo de coordenadas
 			Scanner reader = new Scanner(new FileReader("aeroportos.txt"));
 			this.pointCounter = new PointCounter();
-			if(reader.hasNext()){
+			if (reader.hasNext()) {
 				this.colsNum = reader.nextInt();
 				this.rowsNum = reader.nextInt();
 				this.espaco = new Airspace(colsNum, rowsNum);
 			}
-			
+
 			airplanes = new LinkedList<Airplane>();
 			airports = new LinkedList<Airport>();
-			
+
 			while (reader.hasNext()) {
 				int x = reader.nextInt();
 				int y = reader.nextInt();
-				Airport airport = new Airport(this, new Point(x, y), espaco);
+				Point ponto = new Point(x, y);
+				Airport airport = new Airport(this, ponto, espaco);
+				espaco.getCell(ponto).setAeroporto(airport);
 				synchronized (airports) {
 					airports.add(airport);
 				}
-				
+
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
@@ -87,38 +91,41 @@ public class GameController {
 	}
 
 	public void createGameRandom(int colsNum, int rowsNum, int numAirports) {
-		//tratar erros de casos extremos
-		assert colsNum>0 && rowsNum>0 && numAirports>0;
-		assert (colsNum*rowsNum)>numAirports;
-		
-		this.colsNum=colsNum;
-		this.rowsNum=rowsNum;
+		// tratar erros de casos extremos
+		assert colsNum > 0 && rowsNum > 0 && numAirports > 0;
+		assert (colsNum * rowsNum) > numAirports;
+
+		this.colsNum = colsNum;
+		this.rowsNum = rowsNum;
 		this.pointCounter = new PointCounter();
 		this.espaco = new Airspace(colsNum, rowsNum);
 		airplanes = new LinkedList<Airplane>();
 		airports = new LinkedList<Airport>();
-		
-		for(int i=0; i<numAirports; i++){
+
+		for (int i = 0; i < numAirports; i++) {
 			Random rand = new Random();
 			int x;
 			int y;
-			//repetir pares X,Y até encontrar um que esteja livre
+			// repetir pares X,Y até encontrar um que esteja livre
 			boolean posLivre;
 			do {
 				x = rand.nextInt(colsNum);
 				y = rand.nextInt(rowsNum);
 				posLivre = true;
 				for (Airport airport : airports) {
-					//Se já existe um aeroporto nestas coordenadas dá false 
+					// Se já existe um aeroporto nestas coordenadas dá false
 					if (airport.getPos().x == x && airport.getPos().y == y) {
 						posLivre = false;
 					}
-					//Se ja existir um aeroporto nas células á volta tb dá false
-					//acabo depois se der tempo, é mais crítico o aeroporto.
+					// Se ja existir um aeroporto nas células á volta tb dá
+					// false
+					// acabo depois se der tempo, é mais crítico o aeroporto.
 				}
 			} while (!posLivre);
-			
-			Airport airport = new Airport(this, new Point(x, y), espaco);
+
+			Point ponto = new Point(x, y);
+			Airport airport = new Airport(this, ponto, espaco);
+			espaco.getCell(ponto).setAeroporto(airport);
 			synchronized (airports) {
 				airports.add(airport);
 			}
@@ -127,8 +134,10 @@ public class GameController {
 
 	public void initUI() {
 		ui = new GameInterface(this); // pq e que recebe este objecto? D
-		//como te epliquei ontem, a GameInterface precisa de falar com o controller
-		//entao quando o controller a cria dase a ela, para se ficarem a conhecer ;)
+		// como te epliquei ontem, a GameInterface precisa de falar com o
+		// controller
+		// entao quando o controller a cria dase a ela, para se ficarem a
+		// conhecer ;)
 	}
 
 	public int getColsNum() {
@@ -157,52 +166,54 @@ public class GameController {
 		return this.airplanes;
 	}
 
-	
 	public void click(Point p) {
-		
+
 		// If is null vê se há avião à espera e faz setIntermédio
 		// Se não null pergunta se é avião.
 
-		AirThing thing = espaco.getCell(p).getOcupante(); 
-		// se calhar isto fica um bocado confuso, o ocupante podia estar mesmo no espaco nao? D
-		// eu acho que ficava melhor porque a celula e como um auxilio para o espaco D
+		Airplane airplane = espaco.getCell(p).getOcupante();
+		// se calhar isto fica um bocado confuso, o ocupante podia estar mesmo
+		// no espaco nao? D
+		// eu acho que ficava melhor porque a celula e como um auxilio para o
+		// espaco D
 
-		//nao percebi... isto vai as espaco buscar a celula naquele ponto, e depois
-		//a celula pede o ocupante, se e que existe la algum agora
+		// nao percebi... isto vai as espaco buscar a celula naquele ponto, e
+		// depois
+		// a celula pede o ocupante, se e que existe la algum agora
 
-		if (thing != null) {
+		if (airplane != null) {
 
-			// É avião?
-			if (thing.getAirType() == AirType.AIRPLANE) {
-				Airplane airplane = (Airplane) thing; // esta instrucao nao esta ao cntrario? thing = Airoplane aeroplane? D
-				//nao. se a thing e do tipo Airplane ent faco caste para airplane e uso airplane a partir daqui
-				if (airplane.isWaitingCommand()) {
-					airplane.stopWaiting();
-					waitingPlane = null;
-				} else {
-					if (waitingPlane != null) {
-						// Saltou de um avião para outro
-						waitingPlane.stopWaiting();
-					}
-
-					airplane.waitCommand();
-					waitingPlane = airplane;
+			// Airplane airplane = (Airplane) thing; // esta instrucao nao esta
+			// ao cntrario? thing = Airoplane aeroplane? D
+			// nao. se a thing e do tipo Airplane ent faco caste para airplane e
+			// uso airplane a partir daqui
+			// desculpa amor entretanto mudei isto...
+			if (airplane.isWaitingCommand()) {
+				airplane.stopWaiting();
+				waitingPlane = null;
+			} else {
+				if (waitingPlane != null) {
+					// Saltou de um avião para outro
+					waitingPlane.stopWaiting();
 				}
+
+				airplane.waitCommand();
+				waitingPlane = airplane;
 			}
-		} else { //nao percebi mto bem este D
-			//se chegar aqui então a thing que saiu da célula clicada é != null
-			//então pergunta se existe um avião à espera de ordens =)
+		} else { // nao percebi mto bem este D
+			// se chegar aqui então a thing que saiu da célula clicada é != null
+			// então pergunta se existe um avião à espera de ordens =)
 			if (waitingPlane != null) {
-				//se sim dá-lhe um destino intermédio
+				// se sim dá-lhe um destino intermédio
 				waitingPlane.setIntermedio(p);
-				//já n está à espera de comando
+				// já n está à espera de comando
 				waitingPlane.stopWaiting();
-				//digo aqui que mais nenhum avião está à espera de ordens
+				// digo aqui que mais nenhum avião está à espera de ordens
 				waitingPlane = null;
 			}
-			//eu faço isto para chamar apenas um método do controlador
-			//e aqui vejo o que se faz. se clicar num avião guado-o para
-			//a seguir receber ordens aqui.
+			// eu faço isto para chamar apenas um método do controlador
+			// e aqui vejo o que se faz. se clicar num avião guado-o para
+			// a seguir receber ordens aqui.
 		}
 
 	}
@@ -219,7 +230,7 @@ public class GameController {
 				airplane.start();
 			}
 		}
-		
+
 	}
 
 	public void interruptGame() {
@@ -231,13 +242,13 @@ public class GameController {
 		}
 
 	}
-	
-	public void updateUI(){
+
+	public void updateUI() {
 		ui.repaint();
 	}
 
 	public Airspace getAirspace() {
-		
+
 		return this.espaco;
 	}
 
