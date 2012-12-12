@@ -73,7 +73,7 @@ public class AirplaneGraphic {
 
 	}
 
-	public void drawAirplaneImage(Graphics2D g2, Airplane airplane) {
+	private void drawAirplaneImage(Graphics2D g2, Airplane airplane) {
 		try {
 			Point pos = airplane.getPos();
 			double baseDim = GameController.cellBaseDim;
@@ -93,7 +93,7 @@ public class AirplaneGraphic {
 		}
 	}
 
-	public void drawPauseSignal(Graphics2D g2, Airplane airplane) {
+	private void drawPauseSignal(Graphics2D g2, Airplane airplane) {
 		Point pos = airplane.getPos();
 		double baseDim = GameController.cellBaseDim;
 		g2.setStroke(new BasicStroke(2));
@@ -108,7 +108,7 @@ public class AirplaneGraphic {
 		g2.draw(line2);
 	}
 
-	public void drawIntermedioSignals(Graphics2D g2, Airplane airplane) {
+	private void drawIntermedioSignals(Graphics2D g2, Airplane airplane) {
 		g2.setColor(Color.green);
 		Point pos = airplane.getPos();
 		double baseDim = GameController.cellBaseDim;
@@ -140,7 +140,7 @@ public class AirplaneGraphic {
 	 * @param g
 	 * @param airplane
 	 */
-	public void drawFuelBars(Graphics2D g2, Airplane airplane) {
+	private void drawFuelBars(Graphics2D g2, Airplane airplane) {
 		Point pos = airplane.getPos();
 		double baseDim = GameController.cellBaseDim;
 
