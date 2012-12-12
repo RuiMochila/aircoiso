@@ -10,11 +10,12 @@ import rui.control.GameController;
 public class Airport extends Thread implements Runnable, AirThing{
 
 	
-	private static final AirType type = AirType.AIRPORT; 
-//	private static final int NUM_AVIOES = 3;
+	private static final AirType type = AirType.AIRPORT;
+	private static final int MIN_AVIOES = 1;
+	
 	private GameController controller;
 	private Airspace espaco;
-	private Point pos; 
+	private Point pos;
 	
 	public Airport(GameController controller, Point pos, Airspace espaco){
 		this.pos=pos;
@@ -23,7 +24,6 @@ public class Airport extends Thread implements Runnable, AirThing{
 	}
 	
 
-	
 	@Override
 	public void run() {
 		//eu lanço aviões quando os há para lançar
@@ -52,15 +52,10 @@ public class Airport extends Thread implements Runnable, AirThing{
 		}
 		/////////
 		
-		//Aqui?
 		
 	}
-	//Na segunda fase, eu recebo aviões de chegada 
-	//(método de aterragem concorrente)
-	//depois aqui no run se existirem volta a lançálo
 
 	
-	//Nao consigo perceber pq estes dois metodos onde sao precisos? se calhar vou perceber mais a frente
 	@Override
 	public AirType getAirType() {
 		return type;
