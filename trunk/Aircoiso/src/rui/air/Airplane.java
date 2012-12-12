@@ -12,7 +12,7 @@ public class Airplane extends Thread implements Runnable {
 	public static final double RESERVA = 0.30;
 	private static final int CONSUMO = 10;
 
-//	private final static AirType type = AirType.AIRPLANE;
+	// private final static AirType type = AirType.AIRPLANE;
 	private GameController controller;
 
 	// currente
@@ -48,46 +48,45 @@ public class Airplane extends Thread implements Runnable {
 
 	@Override
 	public void run() {
-		//Quando começa torna-se visível
+		// Quando começa torna-se visível
 		try {
-		esperaTempoAleatorio();
-		tentaDescolar();
-		this.visible=true;
-		
-		
+			esperaTempoAleatorio();
+			tentaDescolar();
+			this.visible = true;
+
 			prox = (Point) pos.clone();
 			while (!cheguei && currentFuel > 0) {
 				controller.updateUI();
-				
-				if (!waiting) {//Se n está à espera de um comando
-					if (trajecto.size() > 0) {//Se existem celulas a percorrer, segue:
-						
+
+				if (!waiting) {// Se n está à espera de um comando
+					if (trajecto.size() > 0) {// Se existem celulas a percorrer,
+												// segue:
+
 						getCellToGo();
-						
+
 						tryMoveNextCell();
-						
+
 					} else {// Chegou ao um destino
-						
+
 						if (destinoIntermedio) {
 							// Era intermédio, volto a fazer setDestino com o
-							// destino final. Ele retoma o seu caminho para lá 
+							// destino final. Ele retoma o seu caminho para lá
 							destinoIntermedio = false;
 							setDestino(destinoFinal);
 						} else {
-							//Não era um intermedio qlqr, mas o final
-							System.out.println("vou aterrar");
+							// Não era um intermedio qlqr, mas o final
 							arriveProcedure();
 						}
 					}
 				}
-				
+
 				currentFuel -= CONSUMO;
 				sleep(SLEEP_TIME);
 			}
-			//Chegou ao final ou perdeu o combustível
-			
+			// Chegou ao final ou perdeu o combustível
+
 			endProcedure();
-			
+
 		} catch (InterruptedException e) {
 		}
 
@@ -104,42 +103,39 @@ public class Airplane extends Thread implements Runnable {
 		}
 	}
 
-	private void esperaTempoAleatorio(){
+	private void esperaTempoAleatorio() throws InterruptedException {
 		Random rand = new Random();
 		int time = rand.nextInt(3000);
-		try {
-			sleep(time);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		sleep(time);
 	}
-	
+
 	private void endProcedure() {
-		//Se foi por falta de combustivel perde pontos
-		//Somo 10 pk depois de chegar ao destino final ainda passa pelo consumo
-		if (!((currentFuel+CONSUMO) > 0)) {
-			System.out.println("Despenhou-se com "+currentFuel);
+		// Se foi por falta de combustivel perde pontos
+		// Somo 10 pk depois de chegar ao destino final ainda passa pelo consumo
+		//isto n estava bem por alguma razao que n vi e k n preocupa
+		if (!((currentFuel) > 0)) {
+			System.out.println("Despenhou-se com " + currentFuel);
 			controller.getPointCounter().addPoints(-100);
 		}
-		//Liberto a célula de onde desapareci
+		// Liberto a célula de onde desapareci
 		Aircell anterior = this.espaco.getCell(pos);
 		anterior.leaveCell();
-		//Removo-me e faço update á UI.
-		synchronized (controller.getAirplanes()) {
-			controller.getAirplanes().remove(this);
-		}
+		// Removo-me e faço update á UI.
+		// synchronized (controller.getAirplanes()) {
+		controller.getAirplanes().remove(this);
+		// }
 		controller.updateUI();
 	}
 
 	private void arriveProcedure() {
-		//Removo-me da lista de aviões
-		synchronized (controller.getAirplanes()) {
-			controller.getAirplanes().remove(this);
-		}
+		// Removo-me da lista de aviões
+		// synchronized (controller.getAirplanes()) {
+		controller.getAirplanes().remove(this);
+		// }
 		this.cheguei = true;
-		//Adiciono a pontuação
+		// Adiciono a pontuação
 		Airport aeroporto = espaco.getCell(pos).getAeroporto();
-		if(aeroporto!=null){
+		if (aeroporto != null) {
 			aeroporto.aterraAviao();
 			System.out.println("Aterrei no aeroporto");
 		}
@@ -160,9 +156,9 @@ public class Airplane extends Thread implements Runnable {
 	}
 
 	private void getCellToGo() {
-		//Vai buscar mais uma celula para percorrer se:
-		//pos=prox (consegui chegar à próxima célula)
-		//OU
+		// Vai buscar mais uma celula para percorrer se:
+		// pos=prox (consegui chegar à próxima célula)
+		// OU
 		// Se a proximaCélula estiver ocupada, eu tenho pos!=prox
 		// Mas preciso de ir buscar uma célula nova na mesma.
 		// Faço isto se já tiver um destinoIntermédio atribuído
@@ -171,11 +167,8 @@ public class Airplane extends Thread implements Runnable {
 		// Que estaria a seguir ao avião que está a bloquear o
 		// caminho e passaria por cima dele.
 		if (pos.equals(prox)
-				|| (!pos.equals(prox) && 
-						proximaCelula.isOccupied() &&
-						destinoIntermedio 
-						)) {
-			
+				|| (!pos.equals(prox) && proximaCelula.isOccupied() && destinoIntermedio)) {
+
 			proximaCelula = trajecto.pollFirst();
 			if (proximaCelula != null) {
 				prox = proximaCelula.getPos();
@@ -184,7 +177,7 @@ public class Airplane extends Thread implements Runnable {
 			}
 		}
 	}
-	
+
 	private void rotateDirection() {
 		if (prox.x > pos.x) {
 			rotation = 90;
@@ -292,8 +285,8 @@ public class Airplane extends Thread implements Runnable {
 	public Point getIntermedio() {
 		return intermedio;
 	}
-	
-	public boolean isVisible(){
+
+	public boolean isVisible() {
 		return visible;
 	}
 

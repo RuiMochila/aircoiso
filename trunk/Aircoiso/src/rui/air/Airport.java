@@ -34,14 +34,15 @@ public class Airport extends Thread implements Runnable{
 	public void run() {
 		//eu lanço aviões quando os há para lançar
 		//não faço nada entrenanto depois, nesta fase do trabalho
-		controller.updateUI();
-		while(true){
+//		controller.updateUI();
+		while(!isInterrupted()){
 			if(plainsToLaunch.get()>0){
 				lancaAviao();
 				plainsToLaunch.decrementAndGet();
 			}
 			
 		}
+
 		
 		
 		
@@ -64,9 +65,9 @@ public class Airport extends Thread implements Runnable{
 			Airplane airplane = new Airplane(controller, new Point(pos), espaco);
 			airplane.setDestino(destino);
 			airplane.abastece(airplane.getTimeToDestino());
-			synchronized (controller.getAirplanes()) {
+//			synchronized (controller.getAirplanes()) {
 				controller.getAirplanes().add(airplane);
-			}
+//			}
 			airplane.start();
 		}
 		/////////

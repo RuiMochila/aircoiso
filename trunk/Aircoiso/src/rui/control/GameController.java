@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import rui.air.AirThing;
 import rui.air.AirType;
@@ -33,8 +34,11 @@ public class GameController {
 	// epah e um bocado irrelevante nao te preocupes com isso.
 	// meti aqui logo de inicio porque sabia que a partida seria
 	// visivel por todas as classes
-	private LinkedList<Airport> airports;
-	private LinkedList<Airplane> airplanes;
+//	private LinkedList<Airport> airports;
+//	private LinkedList<Airplane> airplanes;
+	private ConcurrentLinkedQueue<Airplane> airplanes;
+	private ConcurrentLinkedQueue<Airport> airports;
+	
 	private PointCounter pointCounter;
 	private Airspace espaco;
 	private GameInterface ui;
@@ -70,8 +74,8 @@ public class GameController {
 				this.espaco = new Airspace(colsNum, rowsNum);
 			}
 
-			airplanes = new LinkedList<Airplane>();
-			airports = new LinkedList<Airport>();
+			airplanes = new ConcurrentLinkedQueue<Airplane>();
+			airports = new ConcurrentLinkedQueue<Airport>();
 
 			while (reader.hasNext()) {
 				int x = reader.nextInt();
@@ -79,9 +83,9 @@ public class GameController {
 				Point ponto = new Point(x, y);
 				Airport airport = new Airport(this, ponto, espaco);
 				espaco.getCell(ponto).setAeroporto(airport);
-				synchronized (airports) {
+//				synchronized (airports) {
 					airports.add(airport);
-				}
+//				}
 
 			}
 			reader.close();
@@ -99,8 +103,8 @@ public class GameController {
 		this.rowsNum = rowsNum;
 		this.pointCounter = new PointCounter();
 		this.espaco = new Airspace(colsNum, rowsNum);
-		airplanes = new LinkedList<Airplane>();
-		airports = new LinkedList<Airport>();
+		airplanes = new ConcurrentLinkedQueue<Airplane>();
+		airports = new ConcurrentLinkedQueue<Airport>();
 
 		for (int i = 0; i < numAirports; i++) {
 			Random rand = new Random();
@@ -126,9 +130,9 @@ public class GameController {
 			Point ponto = new Point(x, y);
 			Airport airport = new Airport(this, ponto, espaco);
 			espaco.getCell(ponto).setAeroporto(airport);
-			synchronized (airports) {
+//			synchronized (airports) {
 				airports.add(airport);
-			}
+//			}
 		}
 	}
 
@@ -158,11 +162,11 @@ public class GameController {
 		return pointCounter;
 	}
 
-	public LinkedList<Airport> getAirports() {
+	public ConcurrentLinkedQueue<Airport> getAirports() {
 		return this.airports;
 	}
 
-	public LinkedList<Airplane> getAirplanes() {
+	public ConcurrentLinkedQueue<Airplane> getAirplanes() {
 		return this.airplanes;
 	}
 

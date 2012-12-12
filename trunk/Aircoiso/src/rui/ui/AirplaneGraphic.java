@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
 
@@ -21,8 +22,10 @@ import rui.air.Airplane;
 
 public class AirplaneGraphic {
 
-	private LinkedList<Airplane> airplanes;
+//	private LinkedList<Airplane> airplanes;
 
+	private ConcurrentLinkedQueue<Airplane> airplanes;
+	
 	public AirplaneGraphic(GameController controller) {
 		this.airplanes = controller.getAirplanes();
 	}
@@ -39,7 +42,7 @@ public class AirplaneGraphic {
 	 * @return sdnklnsd
 	 */
 	public void paintAll(Graphics g) {
-		synchronized (airplanes) {
+//		synchronized (airplanes) {
 
 			for (Airplane airplane : airplanes) {
 				if(airplane.isVisible()){
@@ -47,7 +50,7 @@ public class AirplaneGraphic {
 				}
 				
 			}
-		}
+//		}
 	}
 
 	/**
