@@ -42,7 +42,6 @@ public class AirplaneGraphic {
 	 * @return sdnklnsd
 	 */
 	public void paintAll(Graphics g) {
-//		synchronized (airplanes) {
 
 			for (Airplane airplane : airplanes) {
 				if(airplane.isVisible()){
@@ -50,7 +49,6 @@ public class AirplaneGraphic {
 				}
 				
 			}
-//		}
 	}
 
 	/**
