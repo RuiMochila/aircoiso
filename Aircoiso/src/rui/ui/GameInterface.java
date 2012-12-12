@@ -76,7 +76,9 @@ public class GameInterface extends JFrame{
 		AirplaneGraphic airplaneGraphics; 
 		AirportGraphic airportGraphic;
 		
+		
 		public Gamefield(){
+			
 			final double baseDim = GameController.cellBaseDim; // supostamente o cellBaseDim nao foi criado no controlador para ser visto por todo o lado? entao pq inicias aqui outra x? D
 			//por nada em especial xD só para ficar mais pequeno no codigo aqui lol
 			int cols = controller.getColsNum();
