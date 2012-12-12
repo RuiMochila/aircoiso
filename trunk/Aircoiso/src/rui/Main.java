@@ -13,13 +13,13 @@ public class Main {
 		
 //		controller.createGameByFile();
 		
-		controller.createGameRandom(15, 15, 4);
+		controller.createGameRandom(15, 15, 2);
 		
 		controller.initUI();
 		
-		controller.initAirports();
+//		controller.initAirports();
 		
-		controller.updateUI();
+//		controller.updateUI();
 		
 	}
 

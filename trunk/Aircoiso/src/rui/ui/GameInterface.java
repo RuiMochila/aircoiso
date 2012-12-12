@@ -48,7 +48,8 @@ public class GameInterface extends JFrame{
 				JButton aux = (JButton) e.getSource();
 				if(aux.getText()=="Start"){
 					aux.setText("End");
-					controller.initAirplanes();
+//					controller.initAirplanes();
+					controller.initAirports();
 				}else{
 					controller.interruptGame();
 					
