@@ -30,7 +30,7 @@ public class GameInterface extends JFrame{
 	public GameInterface(final GameController controller) { //final?
 		this.controller=controller;
 		setTitle(interfaceTitle);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 
 		//criar componente de jogo e darlhe o controller

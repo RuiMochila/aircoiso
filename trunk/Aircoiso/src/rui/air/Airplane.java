@@ -137,7 +137,6 @@ public class Airplane extends Thread implements Runnable {
 		Airport aeroporto = espaco.getCell(pos).getAeroporto();
 		if (aeroporto != null) {
 			aeroporto.aterraAviao();
-			System.out.println("Aterrei no aeroporto");
 		}
 		controller.getPointCounter().addPoints(10);
 		controller.getPointCounter().addPoints(

@@ -75,8 +75,6 @@ public class Airport extends Thread implements Runnable{
 
 	public void aterraAviao(){
 		this.plainsToLaunch.incrementAndGet();
-		System.out.println("recebi aterragem");
-		System.out.println(plainsToLaunch.get());
 	}
 
 
