@@ -34,11 +34,11 @@ public class GameController {
 	// epah e um bocado irrelevante nao te preocupes com isso.
 	// meti aqui logo de inicio porque sabia que a partida seria
 	// visivel por todas as classes
-//	private LinkedList<Airport> airports;
-//	private LinkedList<Airplane> airplanes;
+	// private LinkedList<Airport> airports;
+	// private LinkedList<Airplane> airplanes;
 	private ConcurrentLinkedQueue<Airplane> airplanes;
 	private ConcurrentLinkedQueue<Airport> airports;
-	
+
 	private PointCounter pointCounter;
 	private Airspace espaco;
 	private GameInterface ui;
@@ -83,9 +83,7 @@ public class GameController {
 				Point ponto = new Point(x, y);
 				Airport airport = new Airport(this, ponto, espaco);
 				espaco.getCell(ponto).setAeroporto(airport);
-//				synchronized (airports) {
-					airports.add(airport);
-//				}
+				airports.add(airport);
 
 			}
 			reader.close();
@@ -124,15 +122,26 @@ public class GameController {
 					// Se ja existir um aeroporto nas células á volta tb dá
 					// false
 					// acabo depois se der tempo, é mais crítico o aeroporto.
+					//Pode não estar muito concurrente, porque todo o bloco precisava
+					//de ser sincronizado
+					ConcurrentLinkedQueue<Airport> copia = new ConcurrentLinkedQueue<Airport>(
+							airports);
+					for (Airport airport2 : copia) {
+						if (airport2.getPos().x == x - 1
+								|| airport2.getPos().x == x + 1
+								|| airport2.getPos().y == y - 1
+								|| airport2.getPos().y == y + 1) {
+							posLivre = false;
+						}
+					}
+
 				}
 			} while (!posLivre);
 
 			Point ponto = new Point(x, y);
 			Airport airport = new Airport(this, ponto, espaco);
 			espaco.getCell(ponto).setAeroporto(airport);
-//			synchronized (airports) {
-				airports.add(airport);
-//			}
+			airports.add(airport);
 		}
 	}
 
@@ -157,9 +166,7 @@ public class GameController {
 				Point ponto = new Point(x, y);
 				Airport airport = new Airport(this, ponto, espaco);
 				espaco.getCell(ponto).setAeroporto(airport);
-//				synchronized (airports) {
-					airports.add(airport);
-//				}
+				airports.add(airport);
 
 			}
 			reader.close();
@@ -167,7 +174,7 @@ public class GameController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void initUI() {
 		ui = new GameInterface(this); // pq e que recebe este objecto? D
 		// como te epliquei ontem, a GameInterface precisa de falar com o

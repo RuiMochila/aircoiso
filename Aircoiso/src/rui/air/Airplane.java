@@ -79,9 +79,10 @@ public class Airplane extends Thread implements Runnable {
 						}
 					}
 				}
-
-				currentFuel -= CONSUMO;
-				sleep(SLEEP_TIME);
+				if(!cheguei){
+					currentFuel -= CONSUMO;
+					sleep(SLEEP_TIME);
+				}
 			}
 			// Chegou ao final ou perdeu o combustível
 
@@ -110,28 +111,21 @@ public class Airplane extends Thread implements Runnable {
 	}
 
 	private void endProcedure() {
-		// Se foi por falta de combustivel perde pontos
-		// Somo 10 pk depois de chegar ao destino final ainda passa pelo consumo
-		//isto n estava bem por alguma razao que n vi e k n preocupa
-		if (!((currentFuel) > 0)) {
-			System.out.println("Despenhou-se com " + currentFuel);
+		//Se não chegou ao destino e está aqui é porque se despenhou
+		if (!cheguei) {
 			controller.getPointCounter().addPoints(-100);
 		}
 		// Liberto a célula de onde desapareci
 		Aircell anterior = this.espaco.getCell(pos);
 		anterior.leaveCell();
 		// Removo-me e faço update á UI.
-		// synchronized (controller.getAirplanes()) {
 		controller.getAirplanes().remove(this);
-		// }
 		controller.updateUI();
 	}
 
 	private void arriveProcedure() {
 		// Removo-me da lista de aviões
-		// synchronized (controller.getAirplanes()) {
 		controller.getAirplanes().remove(this);
-		// }
 		this.cheguei = true;
 		// Adiciono a pontuação
 		Airport aeroporto = espaco.getCell(pos).getAeroporto();
@@ -248,7 +242,7 @@ public class Airplane extends Thread implements Runnable {
 	}
 
 	public void abastece(int neededFuel) {
-		this.initFuel = (int) ((double) (neededFuel * (double) (1 + RESERVA)) * CONSUMO);
+		this.initFuel = (int) ((double) Math.ceil((neededFuel * (double) (1 + RESERVA))) * CONSUMO);
 		this.currentFuel = this.initFuel;
 	}
 
