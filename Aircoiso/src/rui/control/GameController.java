@@ -136,6 +136,38 @@ public class GameController {
 		}
 	}
 
+	public void createGameTest() {
+
+		try {
+			// Falta meter inteligência de controlo de coordenadas
+			Scanner reader = new Scanner(new FileReader("aeroportosBase.txt"));
+			this.pointCounter = new PointCounter();
+			if (reader.hasNext()) {
+				this.colsNum = reader.nextInt();
+				this.rowsNum = reader.nextInt();
+				this.espaco = new Airspace(colsNum, rowsNum);
+			}
+
+			airplanes = new ConcurrentLinkedQueue<Airplane>();
+			airports = new ConcurrentLinkedQueue<Airport>();
+
+			while (reader.hasNext()) {
+				int x = reader.nextInt();
+				int y = reader.nextInt();
+				Point ponto = new Point(x, y);
+				Airport airport = new Airport(this, ponto, espaco);
+				espaco.getCell(ponto).setAeroporto(airport);
+//				synchronized (airports) {
+					airports.add(airport);
+//				}
+
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void initUI() {
 		ui = new GameInterface(this); // pq e que recebe este objecto? D
 		// como te epliquei ontem, a GameInterface precisa de falar com o
