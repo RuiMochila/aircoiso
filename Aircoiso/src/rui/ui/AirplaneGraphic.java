@@ -78,16 +78,15 @@ public class AirplaneGraphic {
 		try {
 			Point pos = airplane.getPos();
 			double baseDim = GameController.cellBaseDim;
-			BufferedImage image; // nao entendi muito bem pq e uma bufferedImage :S pq e que precisamos de ter um buffer? D
+			BufferedImage image; 
 			image = ImageIO.read(new File("images/aviao.png"));
-			
-			// para que e que serve tudo o que vem por baixo? Para a rotacao do aviao? D
+
 			double locationX = image.getWidth() / 2; 
 			double locationY = image.getHeight() / 2;
 			AffineTransform tx = AffineTransform.getRotateInstance(
 					Math.toRadians(airplane.getRotation()), locationX,
 					locationY);
-			AffineTransformOp op = new AffineTransformOp(tx, // qual e mesmo a diferenca destas duas classes? Tiraste isto da net certo? Nao preciso de saber pois nao? D
+			AffineTransformOp op = new AffineTransformOp(tx, 
 					AffineTransformOp.TYPE_BILINEAR);
 			// Drawing the rotated image at the required drawing locations
 			g2.drawImage(op.filter(image, null), (int) (pos.x * baseDim) + 2,
