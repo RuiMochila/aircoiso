@@ -74,7 +74,7 @@ public class GameController {
 				this.espaco = new Airspace(colsNum, rowsNum);
 			}
 
-			airplanes = new ConcurrentLinkedQueue<Airplane>();
+			airplanes = new ConcurrentLinkedQueue<Airplane>(); //depois podes me explicar melhor o que e isto? D
 			airports = new ConcurrentLinkedQueue<Airport>();
 
 			while (reader.hasNext()) {

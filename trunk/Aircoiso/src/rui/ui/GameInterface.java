@@ -23,12 +23,12 @@ import rui.control.GameController;
 @SuppressWarnings("serial")
 public class GameInterface extends JFrame{
 
-	protected GameController controller; //pq Ž que Ž protected? pq est‡ nouto pacote? D
+	protected GameController controller; 
 	//e protected para ser acessivel dentro da inner class sem recorrer a um getter
 	private String interfaceTitle = "AirController";
 	
 	public GameInterface(final GameController controller) { //final?
-		this.controller=controller;
+		this.controller=controller; //tu so fizeste isto aqui :s D
 		setTitle(interfaceTitle);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
