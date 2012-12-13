@@ -27,8 +27,8 @@ public class GameInterface extends JFrame{
 	//e protected para ser acessivel dentro da inner class sem recorrer a um getter
 	private String interfaceTitle = "AirController";
 	
-	public GameInterface(final GameController controller) { //final?
-		this.controller=controller; //tu so fizeste isto aqui :s D
+	public GameInterface(final GameController controller) {
+		this.controller=controller; 
 		setTitle(interfaceTitle);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);

@@ -35,7 +35,7 @@ public class Airport extends Thread implements Runnable{
 		//eu lanço aviões quando os há para lançar
 		//não faço nada entrenanto depois, nesta fase do trabalho
 //		controller.updateUI();
-		while(!isInterrupted()){
+		while(true){
 			if(plainsToLaunch.get()>0){
 				lancaAviao();
 				plainsToLaunch.decrementAndGet();
