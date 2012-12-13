@@ -41,10 +41,7 @@ public class Airport extends Thread implements Runnable{
 				plainsToLaunch.decrementAndGet();
 			}
 			
-		}
-
-		
-		
+		}	
 		
 	}
 
@@ -53,7 +50,9 @@ public class Airport extends Thread implements Runnable{
 		//LANCA 1 AVIAO
 		//////////
 		//faço uma copia da lista de aeroportos
+		
 		LinkedList<Airport> copia = new LinkedList<Airport>(controller.getAirports());
+		
 		//excluo-me da lista e fico com todos os outros destinos
 		copia.remove(this);
 		//se eu não era o único
