@@ -93,7 +93,7 @@ public class Airplane extends Thread implements Runnable { // pq e q implementa 
 
 	}
 
-	private void tentaDescolar() throws InterruptedException {
+	private void tentaDescolar() throws InterruptedException { //quando e que se mete afinal o try/catch?
 		if (proximaCelula != null) {
 
 			while (proximaCelula.isOccupied()) {
@@ -163,8 +163,8 @@ public class Airplane extends Thread implements Runnable { // pq e q implementa 
 				|| (!pos.equals(prox) && proximaCelula.isOccupied() && destinoIntermedio)) {
 
 			proximaCelula = trajecto.pollFirst();
-			if (proximaCelula != null) {
-				prox = proximaCelula.getPos();
+			if (proximaCelula != null) { // isto tambem e realmente preciso? D
+				prox = proximaCelula.getPos(); //este metodo basicamente diz qual e o proximo ponto Ž isso? pq e que precisas desta linha? nao basta saber qual e a proximaCelula? Depois tmb sabemos o ponto dessa celula D
 				// Gira o avião no sentido certo.
 				rotateDirection();
 			}
