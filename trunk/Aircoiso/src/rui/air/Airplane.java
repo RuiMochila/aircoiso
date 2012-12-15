@@ -6,7 +6,7 @@ import java.util.Random;
 
 import rui.control.GameController;
 
-public class Airplane extends Thread implements Runnable {
+public class Airplane extends Thread implements Runnable { // pq e q implementa esta interface? Se e thread ja tem o run ou nao? Que diferenca faz? D
 
 	private final static int SLEEP_TIME = 1000;
 	public static final double RESERVA = 0.30;
@@ -125,7 +125,7 @@ public class Airplane extends Thread implements Runnable {
 
 	private void arriveProcedure() {
 		// Removo-me da lista de aviões
-		controller.getAirplanes().remove(this);
+		//controller.getAirplanes().remove(this); PERCEBER SE FAZ FALTA!
 		this.cheguei = true;
 		// Adiciono a pontuação
 		Airport aeroporto = espaco.getCell(pos).getAeroporto();
