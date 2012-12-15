@@ -69,7 +69,6 @@ public class Airport extends Thread implements Runnable{
 //			}
 			airplane.start();
 		}
-		/////////
 	}
 
 	public void aterraAviao(){
