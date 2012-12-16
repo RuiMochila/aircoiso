@@ -125,7 +125,7 @@ public class GameController {
 					//Pode não estar muito concurrente, porque todo o bloco precisava
 					//de ser sincronizado
 					ConcurrentLinkedQueue<Airport> copia = new ConcurrentLinkedQueue<Airport>(
-							airports);
+							airports); 
 					for (Airport airport2 : copia) {
 						if (airport2.getPos().x == x - 1
 								|| airport2.getPos().x == x + 1
@@ -224,7 +224,7 @@ public class GameController {
 		// depois
 		// a celula pede o ocupante, se e que existe la algum agora
 
-		if (airplane != null) {
+		if (airplane != null) { // este e outro if que nao entendo :/ e necessario? D
 
 			// Airplane airplane = (Airplane) thing; // esta instrucao nao esta
 			// ao cntrario? thing = Airoplane aeroplane? D
